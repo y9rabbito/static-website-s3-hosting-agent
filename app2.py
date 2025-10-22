@@ -1,9 +1,9 @@
-# app_simple.py
-import os
 import streamlit as st
 from agent import extract_zip_to_temp, run_deploy_plan, call_bedrock_model
 
-# Initialize session state
+# ------------------------------
+# Session state
+# ------------------------------
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
@@ -12,9 +12,9 @@ if "extracted_path" not in st.session_state:
 
 st.title("AWS S3 Hosting Agent")
 
-# -------------------------------
-# File upload section
-# -------------------------------
+# ------------------------------
+# File uploader
+# ------------------------------
 uploaded_zip = st.file_uploader("Upload your static website (ZIP)", type=["zip"])
 if uploaded_zip:
     if not st.session_state.extracted_path:
@@ -23,17 +23,15 @@ if uploaded_zip:
         )
         st.success(f"Extracted {uploaded_zip.name} to temp folder")
 
-# -------------------------------
-# Chat interface
-# -------------------------------
+# ------------------------------
+# Chat & deployment
+# ------------------------------
 user_input = st.text_input("Type your message or deployment command:")
 
 if user_input:
-    # Add user message
     st.session_state.messages.append(f"User: {user_input}")
-    
-    # Check if it’s a deployment command
     deployment_keywords = ["host", "deploy", "upload to s3", "publish", "launch website"]
+
     if any(k in user_input.lower() for k in deployment_keywords):
         if not st.session_state.extracted_path:
             bot_response = "Please upload a ZIP website first!"
@@ -51,19 +49,17 @@ if user_input:
                 error_msg = deploy_result.get("error", "Unknown error")
                 bot_response = f"Deployment failed. {error_msg}"
     else:
-        # Regular chat: call Bedrock
         try:
             response_text = call_bedrock_model(user_input)
-            bot_response = f"{response_text}"
+            bot_response = response_text
         except Exception as e:
             bot_response = f"Sorry, I couldn't process your request. ({e})"
 
-    # Add bot response
     st.session_state.messages.append(bot_response)
 
-# -------------------------------
+# ------------------------------
 # Display conversation
-# -------------------------------
+# ------------------------------
 st.markdown("### Conversation")
 for msg in st.session_state.messages:
     st.text(msg)
