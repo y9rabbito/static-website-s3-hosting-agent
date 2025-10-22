@@ -1,4 +1,3 @@
-# app_simple.py
 import streamlit as st
 import os
 from agent import extract_zip_to_temp, run_deploy_plan, call_bedrock_model
