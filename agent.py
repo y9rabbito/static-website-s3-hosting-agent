@@ -10,7 +10,6 @@ import zipfile
 import tempfile
 import boto3
 from botocore.exceptions import ClientError
-from dotenv import load_dotenv
 import re
 import mimetypes
 import streamlit as st
