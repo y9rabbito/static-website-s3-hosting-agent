@@ -16,14 +16,6 @@ An **autonomous Streamlit app** to deploy static websites to **AWS S3** using **
 - Optional **chat interface** powered by AWS Bedrock LLM for deployment instructions and assistance.  
 
 ---
-
-## 📸 Demo Screenshot
-
-![Screenshot](screenshot.png)  
-*Replace with your own screenshot of the deployed app.*
-
----
-
 ## ⚙️ Installation / Setup
 
 ### 1. Clone the repository
@@ -132,14 +124,4 @@ flowchart LR
 - Python-dotenv (for local `.env`)  
 
 ---
-
-## 📜 License
-
-MIT License – free to use and modify.
-
----
-
-## ✉️ Contact / Support
-
-For questions or issues, contact: **your-email@example.com**
 
