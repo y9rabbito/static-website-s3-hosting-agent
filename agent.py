@@ -17,7 +17,6 @@ import streamlit as st
 # ------------------------------
 # Load .env
 # ------------------------------
-load_dotenv()
 
 AWS_ACCESS_KEY_ID = st.secrets.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = st.secrets.get("AWS_SECRET_ACCESS_KEY")
