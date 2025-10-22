@@ -99,22 +99,6 @@ aws-s3-hosting-agent/
 
 ---
 
-## 📊 Workflow Diagram
-
-```mermaid
-flowchart LR
-    A[Upload ZIP Website] --> B[Validate Folder]
-    B --> C{index.html Exists?}
-    C -- No --> D[Error: Cannot Deploy]
-    C -- Yes --> E[Check/Create S3 Bucket]
-    E --> F[Upload Files to Bucket]
-    F --> G[Enable Static Hosting]
-    G --> H[Return Public URL]
-    F --> I[Optional: AI Chat via Bedrock]
-```
-
----
-
 ## 📦 Dependencies
 
 - Python 3.10+  
