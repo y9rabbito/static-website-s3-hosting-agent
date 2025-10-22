@@ -2,4 +2,3 @@ streamlit
 boto3
 botocore
 requests
-mimetypes
