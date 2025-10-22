@@ -1,5 +1,6 @@
-import streamlit as st
+# app_simple.py
 import os
+import streamlit as st
 from agent import extract_zip_to_temp, run_deploy_plan, call_bedrock_model
 
 # Initialize session state
