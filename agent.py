@@ -4,28 +4,27 @@ agent.py
 Autonomous AWS Agent to host a static website on S3 using AWS Bedrock for reasoning.
 """
 
-import json
 import os
+import json
+import streamlit as st
 import zipfile
 import tempfile
 import boto3
 from botocore.exceptions import ClientError
-from dotenv import load_dotenv
 import re
 import mimetypes
-import streamlit as st
 
 # ------------------------------
 # Load .env
 # ------------------------------
-load_dotenv()
 
 AWS_ACCESS_KEY_ID = st.secrets.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = st.secrets.get("AWS_SECRET_ACCESS_KEY")
-AWS_REGION = st.secrets.get("AWS_DEFAULT_REGION", "us-east-1")
+AWS_REGION = st.secrets.get("AWS_DEFAULT_REGION", "ap-south-1")
 BEDROCK_MODEL_ID = st.secrets.get(
     "BEDROCK_MODEL_ID", "anthropic.claude-3-5-sonnet-20240620-v1:0"
 )
+
 
 # ------------------------------
 # Validate .env
