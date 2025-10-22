@@ -1,26 +1,30 @@
-# app_simple.py
-
 import streamlit as st
 from agent import extract_zip_to_temp, run_deploy_plan, call_bedrock_model
 
 # ------------------------------
-# Streamlit state
+# Session state
 # ------------------------------
-if "messages" not in st.session_state: st.session_state.messages = []
-if "extracted_path" not in st.session_state: st.session_state.extracted_path = None
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+if "extracted_path" not in st.session_state:
+    st.session_state.extracted_path = None
 
 st.title("AWS S3 Hosting Agent")
 
 # ------------------------------
-# File upload
+# File uploader
 # ------------------------------
 uploaded_zip = st.file_uploader("Upload your static website (ZIP)", type=["zip"])
-if uploaded_zip and not st.session_state.extracted_path:
-    st.session_state.extracted_path = extract_zip_to_temp(uploaded_zip.read(), uploaded_zip.name)
-    st.success(f"Extracted {uploaded_zip.name} to temp folder")
+if uploaded_zip:
+    if not st.session_state.extracted_path:
+        st.session_state.extracted_path = extract_zip_to_temp(
+            uploaded_zip.read(), uploaded_zip.name
+        )
+        st.success(f"Extracted {uploaded_zip.name} to temp folder")
 
 # ------------------------------
-# User input / deployment
+# Chat & deployment
 # ------------------------------
 user_input = st.text_input("Type your message or deployment command:")
 
@@ -33,15 +37,21 @@ if user_input:
             bot_response = "Please upload a ZIP website first!"
         else:
             with st.spinner("Deploying website..."):
-                deploy_result = run_deploy_plan(st.session_state.extracted_path, region="ap-south-1", user_msg=user_input)
+                deploy_result = run_deploy_plan(
+                    st.session_state.extracted_path,
+                    region="ap-south-1",
+                    user_msg=user_input
+                )
             if deploy_result.get("ok"):
                 url = deploy_result.get("website_url", "URL not available")
                 bot_response = f"Website deployed successfully! {url}"
             else:
-                bot_response = f"Deployment failed. {deploy_result.get('error', 'Unknown error')}"
+                error_msg = deploy_result.get("error", "Unknown error")
+                bot_response = f"Deployment failed. {error_msg}"
     else:
         try:
-            bot_response = call_bedrock_model(user_input)
+            response_text = call_bedrock_model(user_input)
+            bot_response = response_text
         except Exception as e:
             bot_response = f"Sorry, I couldn't process your request. ({e})"
 
